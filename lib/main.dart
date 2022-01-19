@@ -12,11 +12,53 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Bluetooth Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: StreamBuilder<BluetoothState> (
+        stream: FlutterBlue.instance.state,
+        initialData: BluetoothState.unknown,
+        builder: (context, snapshot){
+        final state = snapshot.data;
+        if (state == BluetoothState.on) {
+          return const MyHomePage(title: 'Bluetooth is ON');
+        } else {
+          return const BluetoothOffScreen();
+        }
+      },)
+    );
+  }
+}
+
+class BluetoothOffScreen extends StatelessWidget {
+  const BluetoothOffScreen({Key? key, this.state}) : super(key: key);
+
+  final BluetoothState? state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.lightBlue,
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            const Icon(
+              Icons.bluetooth_disabled,
+              size: 200.0,
+              color: Colors.white54,
+            ),
+            Text(
+              'Bluetooth Adapter is ${state != null ? state.toString().substring(15) : 'not available'}.',
+              style: Theme.of(context)
+                  .primaryTextTheme
+                  .subtitle1
+                  ?.copyWith(color: Colors.white),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
