@@ -68,6 +68,8 @@ class BluetoothOffScreen extends StatelessWidget {
 }
 
 class FindDevicesScreen extends StatelessWidget {
+  const FindDevicesScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,13 +97,22 @@ class FindDevicesScreen extends StatelessWidget {
                               builder: (c, snapshot) {
                                 if (snapshot.data ==
                                     BluetoothDeviceState.connected) {
-                                  return RaisedButton(
-                                    child: Text('OPEN'),
-                                    onPressed: () => Navigator.of(context).push(
+                                      return ElevatedButton.icon(
+                                        style: ElevatedButton.styleFrom(
+                                          shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                                        ),
+                                        primary: const Color.fromARGB(255, 244, 224, 224),
+                                        onPrimary: const Color.fromARGB(255, 0, 0, 0),
+                                      ),
+                                      label: const Text('Open'),
+                                      icon: const Icon(Icons.open_in_browser_sharp),
+                                      onPressed: () => Navigator.of(context).push(
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                DeviceScreen(device: d))),
-                                  );
+                                          builder: (context) => DeviceScreen(device: d)
+                                        )
+                                      ),                  
+                                    );                                  
                                 }
                                 return Text(snapshot.data.toString());
                               },
